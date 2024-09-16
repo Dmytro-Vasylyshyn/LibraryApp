@@ -1,0 +1,27 @@
+@model YourProject.Models.Book
+
+<h2>Додати / Редагувати книгу</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Title">Назва</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />
+    </div>
+    <div class="form-group">
+        <label for="Author">Автор</label>
+        <input type="text" class="form-control" id="Author" name="Author" value="@Model.Author" required />
+    </div>
+    <div class="form-group">
+        <label for="Genre">Жанр</label>
+        <input type="text" class="form-control" id="Genre" name="Genre" value="@Model.Genre" required />
+    </div>
+    <div class="form-group">
+        <label for="Year">Рік видання</label>
+        <input type="number" class="form-control" id="Year" name="Year" value="@Model.Year" required />
+    </div>
+    <div class="form-group">
+        <label for="Copies">Кількість примірників</label>
+        <input type="number" class="form-control" id="Copies" name="Copies" value="@Model.Copies" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>

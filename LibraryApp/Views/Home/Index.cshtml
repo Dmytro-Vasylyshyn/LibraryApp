@@ -1,8 +1,41 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<YourProject.Models.Book>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Список книг</h2>
+
+<form method="get">
+    <input type="text" name="searchTitle" placeholder="Назва книги" value="@Request.Query["searchTitle"]" />
+    <input type="text" name="searchAuthor" placeholder="Автор" value="@Request.Query["searchAuthor"]" />
+    <input type="text" name="searchGenre" placeholder="Жанр" value="@Request.Query["searchGenre"]" />
+    <input type="submit" value="Пошук" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Автор</th>
+            <th>Жанр</th>
+            <th>Рік</th>
+            <th>Кількість примірників</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Author</td>
+            <td>@item.Genre</td>
+            <td>@item.Year</td>
+            <td>@item.Copies</td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.Id })">Редагувати</a> |
+                <a href="@Url.Action("Delete", new { id = item.Id })">Видалити</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create")">Додати нову книгу</a>
