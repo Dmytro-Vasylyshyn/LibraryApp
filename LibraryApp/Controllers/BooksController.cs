@@ -7,9 +7,9 @@ using System.Linq;
 
 public class BooksController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly LibraryContext _context;
 
-    public BooksController(ApplicationDbContext context)
+    public BooksController(LibraryContext context)
     {
         _context = context;
     }
@@ -34,19 +34,33 @@ public class BooksController : Controller
             books = books.Where(b => b.Genre.Contains(searchGenre));
         }
 
+        ViewData["SearchTitle"] = searchTitle;
+        ViewData["SearchAuthor"] = searchAuthor;
+        ViewData["SearchGenre"] = searchGenre;
+
         return View(await books.ToListAsync());
     }
 
 
+
     public IActionResult Create()
     {
-        return View();
+         return View(new Book());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Title,Author,Genre,Year,Copies")] Book book)
+    public async Task<IActionResult> Create([Bind("Title,Author,Genre,Year,CopiesAvailable")] Book book)
     {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error.ErrorMessage); 
+            }
+            return View(book); 
+        }
         if (ModelState.IsValid)
         {
             _context.Add(book);
@@ -73,7 +87,7 @@ public class BooksController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Genre,Year,Copies")] Book book)
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Genre,Year,CopiesAvailable")] Book book)
     {
         if (id != book.Id)
         {
@@ -103,22 +117,18 @@ public class BooksController : Controller
         return View(book);
     }
 
-    public async Task<IActionResult> Delete(int? id)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var book = await _context.Books
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var book = await _context.Books.FindAsync(id);
         if (book == null)
         {
             return NotFound();
         }
-
-        return View(book);
+        _context.Books.Remove(book);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
+
 
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]

@@ -1,27 +1,34 @@
-@model YourProject.Models.Book
+@model LibraryApp.Models.Book
 
 <h2>Додати / Редагувати книгу</h2>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
 <form asp-action="Create" method="post">
     <div class="form-group">
         <label for="Title">Назва</label>
         <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="Author">Автор</label>
         <input type="text" class="form-control" id="Author" name="Author" value="@Model.Author" required />
+        <span asp-validation-for="Author" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="Genre">Жанр</label>
         <input type="text" class="form-control" id="Genre" name="Genre" value="@Model.Genre" required />
+        <span asp-validation-for="Genre" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label for="Year">Рік видання</label>
         <input type="number" class="form-control" id="Year" name="Year" value="@Model.Year" required />
+        <span asp-validation-for="Year" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Copies">Кількість примірників</label>
-        <input type="number" class="form-control" id="Copies" name="Copies" value="@Model.Copies" required />
+        <label for="CopiesAvailable">Кількість примірників</label>
+        <input type="number" class="form-control" id="CopiesAvailable" name="CopiesAvailable" value="@Model.CopiesAvailable" required />
+        <span asp-validation-for="CopiesAvailable" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Зберегти</button>
 </form>
