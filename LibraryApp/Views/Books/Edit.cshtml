@@ -4,7 +4,8 @@
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
     <div class="form-group">
         <label for="Title">Назва</label>
         <input type="text" class="form-control" id="Title" name="Title" value="@Model.Title" required />

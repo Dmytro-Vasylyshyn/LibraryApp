@@ -17,7 +17,7 @@
             <th>Жанр</th>
             <th>Рік</th>
             <th>Кількість примірників</th>
-            <th></th>
+            <th>Дії</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,15 @@
             <td>@item.CopiesAvailable</td>
             <td>
                 <a href="@Url.Action("Edit", new { id = item.Id })">Редагувати</a> |
-                <a href="@Url.Action("Delete", new { id = item.Id })">Видалити</a>
+                <a href="@Url.Action("Delete", new { id = item.Id })">Видалити</a> |
+                
+                <!-- Borrow button -->
+                <form asp-action="Borrow" asp-controller="Users" method="post" style="display:inline;">
+                    <input type="hidden" name="bookId" value="@item.Id" />
+                    <input type="hidden" name="userId" value="@ViewBag.UserId" /> 
+                    <input type="submit" value="Взяти книгу" class="btn btn-primary" />
+                    <input type="submit" value="Взяти книгу" class="btn btn-primary" />
+                </form>
             </td>
         </tr>
     }

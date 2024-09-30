@@ -1,0 +1,53 @@
+@model IEnumerable<LibraryApp.Models.Book>
+
+@{
+    ViewBag.UserId = ViewBag.UserId; 
+}
+
+<h2>Book List</h2>
+
+<form method="get">
+    <input type="text" name="searchTitle" placeholder="Title" />
+    <input type="text" name="searchAuthor" placeholder="Author" />
+    <input type="text" name="searchGenre" placeholder="Genre" />
+    <input type="submit" value="Search" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>Copies Available</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Author</td>
+                <td>@item.Genre</td>
+                <td>@item.Year</td>
+                <td>@item.CopiesAvailable</td>
+                <td>
+                    @if (item.CopiesAvailable > 0)
+                    {
+                        <form asp-action="Borrow" asp-controller="Users" method="post" style="display:inline;">
+                            <input type="hidden" name="bookId" value="@item.Id" />
+                            <input type="hidden" name="userId" value="@ViewBag.UserId" />
+                            <input type="submit" value="Borrow" class="btn btn-primary" />
+                        </form>
+                    }
+                    else
+                    {
+                        <span>No copies available</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

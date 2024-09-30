@@ -1,24 +1,30 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LibraryApp.Data;
 using LibraryApp.Models; 
+using Microsoft.AspNetCore.Identity; 
 using System.Threading.Tasks;
 using System.Linq;
 
+[Authorize] 
 public class BooksController : Controller
 {
     private readonly LibraryContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public BooksController(LibraryContext context)
+    public BooksController(LibraryContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
+    // Combine the two Index methods into one
     public async Task<IActionResult> Index(string searchTitle, string searchAuthor, string searchGenre)
     {
-        var books = from b in _context.Books
-                    select b;
+        var books = _context.Books.AsQueryable(); // Start with a queryable collection
 
+        // Filter books based on search criteria
         if (!string.IsNullOrEmpty(searchTitle))
         {
             books = books.Where(b => b.Title.Contains(searchTitle));
@@ -34,21 +40,22 @@ public class BooksController : Controller
             books = books.Where(b => b.Genre.Contains(searchGenre));
         }
 
+        // Store search criteria in ViewData for the view to access
         ViewData["SearchTitle"] = searchTitle;
         ViewData["SearchAuthor"] = searchAuthor;
         ViewData["SearchGenre"] = searchGenre;
 
-        return View(await books.ToListAsync());
+        return View(await books.ToListAsync()); // Return the filtered list
     }
 
-
-
+    [Authorize(Roles = "Administrator")] 
     public IActionResult Create()
     {
-         return View(new Book());
+        return View(new Book());
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")] 
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Title,Author,Genre,Year,CopiesAvailable")] Book book)
     {
@@ -61,15 +68,13 @@ public class BooksController : Controller
             }
             return View(book); 
         }
-        if (ModelState.IsValid)
-        {
-            _context.Add(book);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(book);
+
+        _context.Add(book);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
+    [Authorize(Roles = "Administrator")] 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -86,6 +91,7 @@ public class BooksController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrator")] 
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Genre,Year,CopiesAvailable")] Book book)
     {
@@ -122,15 +128,15 @@ public class BooksController : Controller
         var book = await _context.Books.FindAsync(id);
         if (book == null)
         {
-            return NotFound();
+            return NotFound(); // Consider returning a view that informs the user
         }
         _context.Books.Remove(book);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-
     [HttpPost, ActionName("Delete")]
+    [Authorize(Roles = "Administrator")] 
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {

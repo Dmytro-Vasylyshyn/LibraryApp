@@ -5,6 +5,13 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <!-- Книги -->
     <a class="btn btn-primary" href="@Url.Action("Index", "Books")">Перейти до списку книг</a>
-</div>
+    
+    <!-- Користувачі -->
+    <a class="btn btn-secondary" href="@Url.Action("Index", "Users")" style="margin-left: 10px;">Перейти до списку користувачів</a>
+    
+    <!-- Логінізація -->
+    <a class="btn btn-info" href="@Url.Action("Login", "Account")" style="margin-left: 10px;">Увійти</a>
 </div>

@@ -1,0 +1,79 @@
+@model IEnumerable<LibraryApp.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Список користувачів";
+}
+
+<h2>Список користувачів</h2>
+
+<p>
+    @Html.ActionLink("Додати нового користувача", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Users", FormMethod.Get))
+{
+    <p>
+        Пошук за:
+        @Html.DropDownList("searchBy", new SelectList(new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Ім'я", Value = "FirstName" },
+            new SelectListItem { Text = "Прізвище", Value = "LastName" },
+            new SelectListItem { Text = "Email", Value = "Email" }
+        }, "Value", "Text"), "Виберіть критерій")
+        @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Введіть текст для пошуку" })
+        <input type="submit" value="Пошук" class="btn btn-default" />
+    </p>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PhoneNumber) <!-- В Identity Phone називається PhoneNumber -->
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Деталі", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Редагувати", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Видалити", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">Користувачів не знайдено.</td>
+            </tr>
+        }
+    </tbody>
+</table>
