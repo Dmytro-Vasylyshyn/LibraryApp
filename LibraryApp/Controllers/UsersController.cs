@@ -21,7 +21,6 @@ namespace LibraryApp.Controllers
             _context = context;
         }
 
-        // Action to display the list of users
         public async Task<IActionResult> Index(string searchString, string searchBy, int pageNumber = 1, int pageSize = 10)
         {
             var usersQuery = _context.Users.AsQueryable();
@@ -41,7 +40,6 @@ namespace LibraryApp.Controllers
             return View(paginatedUsers);
         }
 
-        // Action to edit a user
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -58,7 +56,6 @@ namespace LibraryApp.Controllers
             return View(user);
         }
 
-        // POST: Edit a user
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
@@ -73,20 +70,17 @@ namespace LibraryApp.Controllers
             {
                 try
                 {
-                    // Load the existing user from the database
                     var existingUser = await _context.Users.FindAsync(id);
                     if (existingUser == null)
                     {
                         return NotFound();
                     }
 
-                    // Update only necessary fields
                     existingUser.FirstName = user.FirstName;
                     existingUser.LastName = user.LastName;
                     existingUser.Email = user.Email;
                     existingUser.PhoneNumber = user.PhoneNumber;
 
-                    // Save changes
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -95,7 +89,7 @@ namespace LibraryApp.Controllers
                     {
                         return NotFound();
                     }
-                    throw; // Rethrow exception if user not found
+                    throw; 
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -103,7 +97,6 @@ namespace LibraryApp.Controllers
             return View(user);
         }
 
-        // Action to delete a user
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -121,7 +114,6 @@ namespace LibraryApp.Controllers
             return View(user);
         }
 
-        // POST: Confirm deletion of a user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -142,20 +134,18 @@ namespace LibraryApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Action to create a new user
         public async Task<IActionResult> Create()
         {
             return View();
         }
 
-        // POST: Create a new user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
-                user.UserName = user.Email; // Set the username to be the same as the email
+                user.UserName = user.Email; 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -163,7 +153,6 @@ namespace LibraryApp.Controllers
             return View(user);
         }
 
-        // Action to view user details
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -203,14 +192,12 @@ namespace LibraryApp.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception (optional)
                 ViewBag.ErrorMessage = "An error occurred while fetching borrowed books.";
                 return View("Error"); // Consider returning an error view
             }
         }
 
 
-        // Action for borrowing a book
         //[Authorize(Roles = "User, Administrator")]
         [HttpPost]
         public async Task<IActionResult> Borrow(int bookId)
@@ -245,7 +232,6 @@ namespace LibraryApp.Controllers
             return RedirectToAction("UserBorrowedBooks", new { id = userId });
         }
 
-        // Action for returning a book
         public async Task<IActionResult> Return(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);

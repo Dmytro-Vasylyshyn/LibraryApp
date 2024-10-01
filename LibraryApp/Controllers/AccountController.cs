@@ -20,16 +20,16 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult AccessDenied(string returnUrl = null)
     {
-        ViewData["ReturnUrl"] = returnUrl; // Можна передати URL для повернення
-        return View(); // Повертаємо представлення для Access Denied
+        ViewData["ReturnUrl"] = returnUrl; 
+        return View(); 
     }
 
-    [HttpPost] // Ensure it's a POST method
-    [ValidateAntiForgeryToken] // Include CSRF protection
+    [HttpPost] 
+    [ValidateAntiForgeryToken] 
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
-        return RedirectToAction("Index", "Home"); // Redirect to the home page
+        return RedirectToAction("Index", "Home"); 
     }
 
     [HttpGet]

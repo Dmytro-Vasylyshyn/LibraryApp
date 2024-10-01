@@ -19,7 +19,7 @@ namespace LibraryApp.Helpers
             TotalCount = count;
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            Items = items ?? new List<T>(); // Prevent null reference
+            Items = items ?? new List<T>(); 
         }
 
         public bool HasPreviousPage => PageIndex > 1;
@@ -34,6 +34,6 @@ namespace LibraryApp.Helpers
 
         public IEnumerator<T> GetEnumerator() => Items.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); // Explicit interface implementation
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator(); 
     }
 }

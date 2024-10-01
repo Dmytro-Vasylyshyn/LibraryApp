@@ -22,9 +22,8 @@ public class BooksController : Controller
     // Combine the two Index methods into one
     public async Task<IActionResult> Index(string searchTitle, string searchAuthor, string searchGenre)
     {
-        var books = _context.Books.AsQueryable(); // Start with a queryable collection
+        var books = _context.Books.AsQueryable(); 
 
-        // Filter books based on search criteria
         if (!string.IsNullOrEmpty(searchTitle))
         {
             books = books.Where(b => b.Title.Contains(searchTitle));
@@ -40,12 +39,11 @@ public class BooksController : Controller
             books = books.Where(b => b.Genre.Contains(searchGenre));
         }
 
-        // Store search criteria in ViewData for the view to access
         ViewData["SearchTitle"] = searchTitle;
         ViewData["SearchAuthor"] = searchAuthor;
         ViewData["SearchGenre"] = searchGenre;
 
-        return View(await books.ToListAsync()); // Return the filtered list
+        return View(await books.ToListAsync());
     }
 
 
@@ -55,7 +53,6 @@ public class BooksController : Controller
     {
         var books = _context.Books.AsQueryable();
 
-        // Apply filters based on search criteria
         if (!string.IsNullOrEmpty(searchTitle))
         {
             books = books.Where(b => b.Title.Contains(searchTitle));
@@ -73,7 +70,7 @@ public class BooksController : Controller
 
         var result = await books.ToListAsync();
 
-        return PartialView("_BooksList", result); // Return a partial view with the filtered books
+        return PartialView("_BooksList", result); 
     }
 
 
@@ -160,7 +157,7 @@ public class BooksController : Controller
         var book = await _context.Books.FindAsync(id);
         if (book == null)
         {
-            return NotFound(); // Consider returning a view that informs the user
+            return NotFound(); 
         }
         _context.Books.Remove(book);
         await _context.SaveChangesAsync();

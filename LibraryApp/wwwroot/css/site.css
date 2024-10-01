@@ -20,6 +20,29 @@ html {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px; 
+  margin-bottom: 10px; 
+}
+
+
+label {
+  display: block; 
+  margin-bottom: 5px;
+  margin-top: 10px; 
+}
+
+
+.form-control {
+  margin-bottom: 10px; 
+}
+
+
+select, input[type="text"] {
+  margin-bottom: 10px; 
+}
+
+label {
+  margin-right: 10px;
 }
 
 

@@ -7,7 +7,7 @@
 <h2>Список книг</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Додати книгу</a> <!-- Кнопка для додавання книги -->
+    <a asp-action="Create" class="btn btn-primary">Додати книгу</a>
 </p>
 
 <form id="searchForm" method="get">
@@ -18,7 +18,7 @@
 </form>
 
 <div id="booksContainer">
-    @await Html.PartialAsync("_BooksList", Model) // Render the initial book list
+    @await Html.PartialAsync("_BooksList", Model) 
 </div>
 
 @section Scripts {
@@ -27,21 +27,21 @@
     <script>
         $(document).ready(function () {
             $('#searchForm').submit(function (e) {
-                e.preventDefault(); // Prevent default form submission
+                e.preventDefault(); 
 
                 var title = $('#searchTitle').val();
                 var author = $('#searchAuthor').val();
                 var genre = $('#searchGenre').val();
 
                 $.ajax({
-                    url: '@Url.Action("Search", "Books")', // URL to the search action
+                    url: '@Url.Action("Search", "Books")', 
                     type: 'GET',
                     data: { searchTitle: title, searchAuthor: author, searchGenre: genre },
                     success: function (result) {
-                        $('#booksContainer').html(result); // Update the container with the result
+                        $('#booksContainer').html(result);
                     },
                     error: function () {
-                        alert('Сталася помилка під час пошуку книг.'); // Error handling
+                        alert('Сталася помилка під час пошуку книг.');
                     }
                 });
             });
