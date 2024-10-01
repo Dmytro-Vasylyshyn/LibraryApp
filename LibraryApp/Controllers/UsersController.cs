@@ -57,6 +57,7 @@ namespace LibraryApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")] 
         public async Task<IActionResult> Edit(string id, ApplicationUser user)
         {
             if (id != user.Id)
@@ -68,7 +69,20 @@ namespace LibraryApp.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    // Завантажте існуючий користувач з бази даних
+                    var existingUser = await _context.Users.FindAsync(id);
+                    if (existingUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Оновіть лише потрібні поля
+                    existingUser.FirstName = user.FirstName;
+                    existingUser.LastName = user.LastName;
+                    existingUser.Email = user.Email;
+                    existingUser.PhoneNumber = user.PhoneNumber;
+
+                    // Збережіть зміни
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -77,13 +91,15 @@ namespace LibraryApp.Controllers
                     {
                         return NotFound();
                     }
-                    throw;
+                    throw; // перекидаємо виняток, якщо користувача не знайдено
                 }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
 
+        [Authorize(Roles = "Administrator")] 
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -100,18 +116,27 @@ namespace LibraryApp.Controllers
             return View(user);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            if (id == null)
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
         public async Task<IActionResult> Create()
         {

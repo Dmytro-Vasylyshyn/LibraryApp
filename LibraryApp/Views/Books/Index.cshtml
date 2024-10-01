@@ -32,13 +32,13 @@
             <td>
                 <a href="@Url.Action("Edit", new { id = item.Id })">Редагувати</a> |
                 <a href="@Url.Action("Delete", new { id = item.Id })">Видалити</a> |
-                
+
                 <!-- Borrow button -->
                 <form asp-action="Borrow" asp-controller="Users" method="post" style="display:inline;">
                     <input type="hidden" name="bookId" value="@item.Id" />
-                    <input type="hidden" name="userId" value="@ViewBag.UserId" /> 
-                    <input type="submit" value="Взяти книгу" class="btn btn-primary" />
-                    <input type="submit" value="Взяти книгу" class="btn btn-primary" />
+                    <input type="hidden" name="userId" value="@ViewBag.UserId ?? string.Empty" /> 
+                    <input type="submit" value="Взяти книгу" class="btn btn-primary" 
+                           @(item.CopiesAvailable > 0 ? "" : "disabled") />
                 </form>
             </td>
         </tr>
