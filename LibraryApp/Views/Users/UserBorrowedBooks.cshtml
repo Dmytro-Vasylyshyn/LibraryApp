@@ -1,0 +1,40 @@
+@model IEnumerable<LibraryApp.Models.Borrowing>
+
+<h2>Borrowed Books</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Borrowed Date</th>
+                <th>Returned Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var borrowing in Model)
+            {
+                <tr>
+                    <td>@borrowing.Book.Title</td>
+                    <td>@borrowing.BorrowedDate.ToShortDateString()</td>
+                    <td>@(borrowing.ReturnedDate.HasValue ? borrowing.ReturnedDate.Value.ToShortDateString() : "Not returned")</td>
+                    <td>
+                        @if (!borrowing.ReturnedDate.HasValue)
+                        {
+                            <form asp-action="Return" method="post">
+                                <input type="hidden" name="id" value="@borrowing.Id" />
+                                <input type="submit" value="Return Book" class="btn btn-danger" />
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No books currently borrowed.</p>
+}
