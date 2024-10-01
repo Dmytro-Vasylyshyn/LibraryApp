@@ -6,29 +6,41 @@
     <div>
         <label asp-for="FirstName"></label>
         <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
+        <span asp-validation-for="FirstName" class="text-danger"></span> 
     </div>
     <div>
         <label asp-for="LastName"></label>
         <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
+        <span asp-validation-for="LastName" class="text-danger"></span> 
     </div>
     <div>
         <label asp-for="Email"></label>
         <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+        <span asp-validation-for="Email" class="text-danger"></span> 
     </div>
     <div>
         <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span> 
     </div>
     <div>
         <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" />
-        <span asp-validation-for="ConfirmPassword"></span>
+        <input asp-for="ConfirmPassword" type="password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span> 
     </div>
+
+    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+    {
+        <div class="text-danger">
+            @ViewData.ModelState[""].Errors[0].ErrorMessage 
+        </div>
+    }
+
     <button type="submit">Register</button>
 </form>
 
 <a asp-action="Login">Already have an account? Log in</a>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

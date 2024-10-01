@@ -42,6 +42,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
     {
+        ViewData["ReturnUrl"] = returnUrl;
+
         if (ModelState.IsValid)
         {
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
@@ -49,10 +51,12 @@ public class AccountController : Controller
             {
                 return LocalRedirect(returnUrl ?? "/");
             }
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt. Please check your credentials.");
         }
         return View(model);
     }
+
 
 
 

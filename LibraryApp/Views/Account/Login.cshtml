@@ -6,13 +6,20 @@
     <div>
         <label asp-for="Email"></label>
         <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+        <span asp-validation-for="Email" class="text-danger"></span> 
     </div>
     <div>
         <label asp-for="Password"></label>
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span> 
     </div>
+
+    @if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count > 0)
+    {
+        <div class="text-danger">
+            @ViewData.ModelState[""].Errors[0].ErrorMessage 
+        </div>
+    }
 
     <button type="submit">Log in</button>
 </form>
