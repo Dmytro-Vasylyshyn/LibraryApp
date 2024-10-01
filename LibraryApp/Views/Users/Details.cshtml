@@ -1,6 +1,5 @@
 @model LibraryApp.Models.ApplicationUser
 
-
 @{
     ViewData["Title"] = "Видалити користувача";
 }
@@ -38,14 +37,17 @@
         </dd>
     </dl>
     
-    <form asp-action="DeleteConfirmed" method="post">
+    <form asp-action="DeleteConfirmed" method="post" id="deleteUserForm">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        <input type="submit" value="Видалити" class="delete-button" /> <!-- Додано клас delete-button -->
+        |
         <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
     </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/site.js"></script>
 }
