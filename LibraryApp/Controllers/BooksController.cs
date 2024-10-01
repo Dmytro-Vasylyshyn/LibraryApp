@@ -48,6 +48,38 @@ public class BooksController : Controller
         return View(await books.ToListAsync()); // Return the filtered list
     }
 
+
+
+    [HttpGet]
+    public async Task<IActionResult> Search(string searchTitle, string searchAuthor, string searchGenre)
+    {
+        var books = _context.Books.AsQueryable();
+
+        // Apply filters based on search criteria
+        if (!string.IsNullOrEmpty(searchTitle))
+        {
+            books = books.Where(b => b.Title.Contains(searchTitle));
+        }
+
+        if (!string.IsNullOrEmpty(searchAuthor))
+        {
+            books = books.Where(b => b.Author.Contains(searchAuthor));
+        }
+
+        if (!string.IsNullOrEmpty(searchGenre))
+        {
+            books = books.Where(b => b.Genre.Contains(searchGenre));
+        }
+
+        var result = await books.ToListAsync();
+
+        return PartialView("_BooksList", result); // Return a partial view with the filtered books
+    }
+
+
+
+
+
     [Authorize(Roles = "Administrator")] 
     public IActionResult Create()
     {

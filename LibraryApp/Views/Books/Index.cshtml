@@ -2,48 +2,40 @@
 
 <h2>Список книг</h2>
 
-<form method="get">
-    <input type="text" name="searchTitle" placeholder="Назва книги" value="@ViewData["SearchTitle"]" />
-    <input type="text" name="searchAuthor" placeholder="Автор" value="@ViewData["SearchAuthor"]" />
-    <input type="text" name="searchGenre" placeholder="Жанр" value="@ViewData["SearchGenre"]" />
+<form id="searchForm" method="get">
+    <input type="text" id="searchTitle" placeholder="Назва книги" value="@ViewData["SearchTitle"]" />
+    <input type="text" id="searchAuthor" placeholder="Автор" value="@ViewData["SearchAuthor"]" />
+    <input type="text" id="searchGenre" placeholder="Жанр" value="@ViewData["SearchGenre"]" />
     <input type="submit" value="Пошук" />
 </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Назва</th>
-            <th>Автор</th>
-            <th>Жанр</th>
-            <th>Рік</th>
-            <th>Кількість примірників</th>
-            <th>Дії</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Title</td>
-            <td>@item.Author</td>
-            <td>@item.Genre</td>
-            <td>@item.Year</td>
-            <td>@item.CopiesAvailable</td>
-            <td>
-                <a href="@Url.Action("Edit", new { id = item.Id })">Редагувати</a> |
-                <a href="@Url.Action("Delete", new { id = item.Id })">Видалити</a> |
+<div id="booksContainer">
+    @await Html.PartialAsync("_BooksList", Model) // Render the initial book list
+</div>
 
-                <!-- Borrow button -->
-                <form asp-action="Borrow" asp-controller="Users" method="post" style="display:inline;">
-                    <input type="hidden" name="bookId" value="@item.Id" />
-                    <input type="hidden" name="userId" value="@ViewBag.UserId ?? string.Empty" /> 
-                    <input type="submit" value="Взяти книгу" class="btn btn-primary" 
-                           @(item.CopiesAvailable > 0 ? "" : "disabled") />
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
 
-<a href="@Url.Action("Create")">Додати нову книгу</a>
+                var title = $('#searchTitle').val();
+                var author = $('#searchAuthor').val();
+                var genre = $('#searchGenre').val();
+
+                $.ajax({
+                    url: '@Url.Action("Search", "Books")', // URL to the search action
+                    type: 'GET',
+                    data: { searchTitle: title, searchAuthor: author, searchGenre: genre },
+                    success: function (result) {
+                        $('#booksContainer').html(result); // Update the container with the result
+                    },
+                    error: function () {
+                        alert('Сталася помилка під час пошуку книг.'); // Error handling
+                    }
+                });
+            });
+        });
+    </script>
+}
