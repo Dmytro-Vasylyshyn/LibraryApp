@@ -152,6 +152,8 @@ public class BooksController : Controller
         return View(book);
     }
 
+
+    [Authorize(Roles = "Administrator")] 
     public async Task<IActionResult> Delete(int id)
     {
         var book = await _context.Books.FindAsync(id);

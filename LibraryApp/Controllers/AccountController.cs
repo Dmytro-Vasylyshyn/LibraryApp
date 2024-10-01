@@ -21,7 +21,7 @@ public class AccountController : Controller
     public IActionResult AccessDenied(string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl; 
-        return View(); 
+        return View("AccessDenied"); 
     }
 
     [HttpPost] 

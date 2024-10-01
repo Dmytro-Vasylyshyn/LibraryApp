@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/LibraryApp.bundle.scp.css"
     },
     {
+      "Id": "/workspaces/LibraryApp/LibraryApp/wwwroot/css/access-denied.css",
+      "PackagePath": "staticwebassets/css/access-denied.css"
+    },
+    {
       "Id": "/workspaces/LibraryApp/LibraryApp/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },

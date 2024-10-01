@@ -26,8 +26,8 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = /workspaces/LibraryApp/LibraryApp
 build_property._RazorSourceGeneratorDebug = 
 
-[/workspaces/LibraryApp/LibraryApp/Views/Account/ AccessDenied.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC8gQWNjZXNzRGVuaWVkLmNzaHRtbA==
+[/workspaces/LibraryApp/LibraryApp/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/workspaces/LibraryApp/LibraryApp/Views/Account/Login.cshtml]

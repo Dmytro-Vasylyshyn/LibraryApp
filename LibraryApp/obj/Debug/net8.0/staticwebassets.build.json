@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "dSLTEdvFqlE9uFZz4FKQC9R5Z0d8KQ3OrtrnFnGRLe0=",
+  "Hash": "9JYAeFJVv2bcdvjDm+xid5fggzR1WV6fJAY8MsXKKoA=",
   "Source": "LibraryApp",
   "BasePath": "_content/LibraryApp",
   "Mode": "Default",
@@ -1193,6 +1193,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/workspaces/LibraryApp/LibraryApp/obj/Debug/net8.0/scopedcss/projectbundle/LibraryApp.bundle.scp.css"
+    },
+    {
+      "Identity": "/workspaces/LibraryApp/LibraryApp/wwwroot/css/access-denied.css",
+      "SourceId": "LibraryApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "/workspaces/LibraryApp/LibraryApp/wwwroot/",
+      "BasePath": "_content/LibraryApp",
+      "RelativePath": "css/access-denied.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/css/access-denied.css"
     },
     {
       "Identity": "/workspaces/LibraryApp/LibraryApp/wwwroot/css/site.css",

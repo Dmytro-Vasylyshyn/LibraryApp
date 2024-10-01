@@ -1,20 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using LibraryApp.Data;
-using LibraryApp.Models; // Include ApplicationUser
+using LibraryApp.Models; 
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure database context and Identity
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add Identity with roles using ApplicationUser
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<LibraryContext>()
     .AddDefaultTokenProviders();
 
-// Configure cookie settings to redirect to login page
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login"; 
@@ -25,7 +22,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Create roles and admin user
 async Task CreateRolesAndAdminUser(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -42,7 +38,6 @@ async Task CreateRolesAndAdminUser(IServiceProvider serviceProvider)
         }
     }
 
-    // Create admin user if it doesn't exist
     var adminEmail = "admin@library.com";
     var adminPassword = "Admin@123";
     var adminUser = new ApplicationUser 
@@ -82,7 +77,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
